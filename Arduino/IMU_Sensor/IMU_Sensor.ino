@@ -8,22 +8,17 @@ Adafruit_BNO055 sensor1 = Adafruit_BNO055(1, 0x28);
 void setup() {
   Serial.begin(115200);
   delay(2000); 
-  Serial.println("Starting IMU connection...");
-
-  if (!sensor1.begin()) {
-    Serial.println("Error: Sensor 1 not found");
-  } else {
-    sensor1.setExtCrystalUse(true);
-  }
+  if (sensor1.begin()) sensor1.setExtCrystalUse(true);
 }
 
 void loop() {
-  sensors_event_t event1;
-  sensor1.getEvent(&event1);
-
-  Serial.print("X: "); Serial.print(event1.orientation.x, 0); 
-  Serial.print(" Y: "); Serial.print(event1.orientation.y, 0); 
-  Serial.print(" Z: "); Serial.println(event1.orientation.z, 0); 
+  imu::Quaternion q1 = sensor1.getQuat();
   
-  delay(100); 
+  // Sending data in CSV format for Unity: W, X, Y, Z
+  Serial.print(q1.w(), 4); Serial.print(",");
+  Serial.print(q1.x(), 4); Serial.print(",");
+  Serial.print(q1.y(), 4); Serial.print(",");
+  Serial.println(q1.z(), 4); 
+
+  delay(50); 
 }
