@@ -52,7 +52,7 @@ public class IMUSensorMapper : MonoBehaviour
                     }
 
                     // Aplicamos la rotación relativa (Pose Actual x Inversa de la Pose Inicial)
-                    transform.rotation = rawSensorRotation * Quaternion.Inverse(calibrationPose);
+                    transform.rotation = Quaternion.Inverse(calibrationPose) * rawSensorRotation;
                 }
             } 
             catch (System.TimeoutException) { }
