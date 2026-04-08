@@ -6,8 +6,13 @@ public class IMUSensorMapper : MonoBehaviour
     public string comPort = "COM8"; 
     SerialPort serialPort;
 
-    // Variables para la calibración
-    private Quaternion calibrationPose = Quaternion.identity;
+    [Header("Modelos 3D")]
+    public Transform sensor1_Model;
+    public Transform sensor2_Model;
+
+    // Calibración individual
+    private Quaternion calibrationPose1 = Quaternion.identity;
+    private Quaternion calibrationPose2 = Quaternion.identity;
     private bool isCalibrated = false;
 
     void Start()
@@ -19,9 +24,9 @@ public class IMUSensorMapper : MonoBehaviour
 
         try {
             serialPort.Open();
-            Debug.Log("Puerto " + comPort + " abierto. Pulsa 'C' para calibrar el nivel.");
+            Debug.Log("Puerto abierto. Pulsa 'C' para calibrar AMBOS sensores.");
         } catch (System.Exception e) {
-            Debug.LogError("Error al abrir el puerto: " + e.Message);
+            Debug.LogError("Error abriendo puerto: " + e.Message);
         }
     }
 
@@ -33,33 +38,48 @@ public class IMUSensorMapper : MonoBehaviour
                 string rawData = serialPort.ReadLine();
                 string[] values = rawData.Split(',');
 
-                // Leemos los 4 primeros números (Sensor 1)
-                if (values.Length >= 4) {
-                    float w = float.Parse(values[0], System.Globalization.CultureInfo.InvariantCulture);
-                    float x = float.Parse(values[1], System.Globalization.CultureInfo.InvariantCulture);
-                    float y = float.Parse(values[2], System.Globalization.CultureInfo.InvariantCulture);
-                    float z = float.Parse(values[3], System.Globalization.CultureInfo.InvariantCulture);
+                // Verificamos que llegan los 8 números del Arduino
+                if (values.Length >= 8) {
+                    
+                    // --- PARSEO SENSOR 1 (Tórax) ---
+                    float w1 = float.Parse(values[0], System.Globalization.CultureInfo.InvariantCulture);
+                    float x1 = float.Parse(values[1], System.Globalization.CultureInfo.InvariantCulture);
+                    float y1 = float.Parse(values[2], System.Globalization.CultureInfo.InvariantCulture);
+                    float z1 = float.Parse(values[3], System.Globalization.CultureInfo.InvariantCulture);
+                    
+                    // Fórmula perfecta que calculamos: (-x, -z, -y, w)
+                    Quaternion rawRot1 = new Quaternion(-x1, -z1, -y1, w1);
 
-                    // --- LA CORRECCIÓN MATEMÁTICA ---
-                    // Cambiamos el orden y el signo para que coincidan los mundos
-                    Quaternion rawSensorRotation = new Quaternion(-x, -z, -y, w);
+                    // --- PARSEO SENSOR 2 (Brazo) ---
+                    float w2 = float.Parse(values[4], System.Globalization.CultureInfo.InvariantCulture);
+                    float x2 = float.Parse(values[5], System.Globalization.CultureInfo.InvariantCulture);
+                    float y2 = float.Parse(values[6], System.Globalization.CultureInfo.InvariantCulture);
+                    float z2 = float.Parse(values[7], System.Globalization.CultureInfo.InvariantCulture);
+                    
+                    // Aplicamos la misma fórmula al segundo sensor
+                    Quaternion rawRot2 = new Quaternion(-x2, -z2, -y2, w2);
 
-                    // Si no está calibrado (al empezar o pulsar C), guardamos la pose actual como 'cero'
+                    // --- CALIBRACIÓN DE LA POSE CERO ---
                     if (!isCalibrated) {
-                        calibrationPose = rawSensorRotation;
+                        calibrationPose1 = rawRot1;
+                        calibrationPose2 = rawRot2;
                         isCalibrated = true;
-                        Debug.Log("¡Calibración completada!");
+                        Debug.Log("¡Calibración exitosa para los dos sensores!");
                     }
 
-                    // Aplicamos la rotación relativa (Pose Actual x Inversa de la Pose Inicial)
-                    transform.rotation = Quaternion.Inverse(calibrationPose) * rawSensorRotation;
+                    // --- APLICAR ROTACIÓN MATEMÁTICA CORRECTA ---
+                    if (sensor1_Model != null) {
+                        sensor1_Model.rotation = Quaternion.Inverse(calibrationPose1) * rawRot1;
+                    }
+                    if (sensor2_Model != null) {
+                        sensor2_Model.rotation = Quaternion.Inverse(calibrationPose2) * rawRot2;
+                    }
                 }
             } 
             catch (System.TimeoutException) { }
             catch (System.Exception) { }
         }
 
-        // Si pulsas la tecla C, se resetea la orientación
         if (Input.GetKeyDown(KeyCode.C)) {
             isCalibrated = false; 
             Debug.Log("Recalibrando...");
