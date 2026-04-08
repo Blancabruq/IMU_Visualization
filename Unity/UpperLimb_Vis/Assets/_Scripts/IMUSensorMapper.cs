@@ -10,6 +10,10 @@ public class IMUSensorMapper : MonoBehaviour
     public Transform sensor1_Model;
     public Transform sensor2_Model;
 
+    [Header("Kinematic Parameters (meters)")]
+    public float upperArmLength = 0.30f; // l_u: Distance from Acromion to Lateral Epicondyle
+    public float forearmLength = 0.25f;  // l_f: Distance from Lateral Epicondyle to Ulnar Styloid
+
     // Calibración individual
     private Quaternion calibrationPose1 = Quaternion.identity;
     private Quaternion calibrationPose2 = Quaternion.identity;
@@ -78,10 +82,16 @@ public class IMUSensorMapper : MonoBehaviour
                         sensor1_Model.rotation = worldRot1;
                     }
 
-                    // 3. El codo (hijo) rota RESPECTO al hombro usando la fórmula de Zhu et al.
+                    
+                    // 3. The elbow (child) rotates relative to the shoulder
                     if (sensor2_Model != null && sensor1_Model != null) {
-                        // q_relativa = inversa(q_proximal) * q_distal
+                        // Relative rotation: q_relative = inverse(q_proximal) * q_distal
                         sensor2_Model.localRotation = Quaternion.Inverse(worldRot1) * worldRot2;
+                        
+                        // Apply D-H link length (l_u) to separate the joints
+                        // Note: We use the X-axis assuming your arm points along the local X-axis. 
+                        // Change to (0, -upperArmLength, 0) or (0, 0, upperArmLength) if your specific 3D model points along Y or Z.
+                        sensor2_Model.localPosition = new Vector3(0f, -upperArmLength, 0f);
                     }
                 }
             } 
