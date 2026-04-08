@@ -11,20 +11,19 @@ void setup() {
   Serial.begin(115200);
   delay(2000); 
   
-  
-  if (!sensor1.begin()) {
+  // Le quitamos el "Adafruit_BNO055::" y dejamos solo el nombre del modo
+  if (!sensor1.begin(OPERATION_MODE_IMUPLUS)) {
     Serial.println("Error S1");
   } else {
     sensor1.setExtCrystalUse(true);
   }
 
-  if (!sensor2.begin()) {
+  if (!sensor2.begin(OPERATION_MODE_IMUPLUS)) {
     Serial.println("Error S2");
   } else {
     sensor2.setExtCrystalUse(true);
   }
 }
-
 void loop() {
   imu::Quaternion q1 = sensor1.getQuat();
   imu::Quaternion q2 = sensor2.getQuat();
