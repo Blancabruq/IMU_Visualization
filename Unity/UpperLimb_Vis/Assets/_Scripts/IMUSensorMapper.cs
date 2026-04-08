@@ -67,12 +67,21 @@ public class IMUSensorMapper : MonoBehaviour
                         Debug.Log("¡Calibración exitosa para los dos sensores!");
                     }
 
-                    // --- APLICAR ROTACIÓN MATEMÁTICA CORRECTA ---
+                    // --- APLICAR ROTACIÓN MATEMÁTICA CORRECTA (CADENA CINEMÁTICA) ---
+                    
+                    // 1. Calculamos la orientación de cada sensor en el espacio global
+                    Quaternion worldRot1 = Quaternion.Inverse(calibrationPose1) * rawRot1;
+                    Quaternion worldRot2 = Quaternion.Inverse(calibrationPose2) * rawRot2;
+
+                    // 2. El hombro (padre) rota respecto al mundo
                     if (sensor1_Model != null) {
-                        sensor1_Model.rotation = Quaternion.Inverse(calibrationPose1) * rawRot1;
+                        sensor1_Model.rotation = worldRot1;
                     }
-                    if (sensor2_Model != null) {
-                        sensor2_Model.rotation = Quaternion.Inverse(calibrationPose2) * rawRot2;
+
+                    // 3. El codo (hijo) rota RESPECTO al hombro usando la fórmula de Zhu et al.
+                    if (sensor2_Model != null && sensor1_Model != null) {
+                        // q_relativa = inversa(q_proximal) * q_distal
+                        sensor2_Model.localRotation = Quaternion.Inverse(worldRot1) * worldRot2;
                     }
                 }
             } 
