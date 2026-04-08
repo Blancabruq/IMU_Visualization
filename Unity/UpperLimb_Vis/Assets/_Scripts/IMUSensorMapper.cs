@@ -52,7 +52,7 @@ public class IMUSensorMapper : MonoBehaviour
                     float z1 = float.Parse(values[3], System.Globalization.CultureInfo.InvariantCulture);
                     
                     // Fórmula perfecta que calculamos: (-x, -z, -y, w)
-                    Quaternion rawRot1 = new Quaternion(-x1, -z1, -y1, w1);
+                    Quaternion rawRot1 = new Quaternion(-z1, -y1, -x1, w1);
 
                     // --- PARSEO SENSOR 2 (Brazo) ---
                     float w2 = float.Parse(values[4], System.Globalization.CultureInfo.InvariantCulture);
@@ -61,7 +61,7 @@ public class IMUSensorMapper : MonoBehaviour
                     float z2 = float.Parse(values[7], System.Globalization.CultureInfo.InvariantCulture);
                     
                     // Aplicamos la misma fórmula al segundo sensor
-                    Quaternion rawRot2 = new Quaternion(-x2, -z2, -y2, w2);
+                    Quaternion rawRot2 = new Quaternion(-z2, -y2, -x2, w2);
 
                     // --- CALIBRACIÓN DE LA POSE CERO ---
                     if (!isCalibrated) {
@@ -74,9 +74,16 @@ public class IMUSensorMapper : MonoBehaviour
                     // --- APLICAR ROTACIÓN MATEMÁTICA CORRECTA (CADENA CINEMÁTICA) ---
                     
                     // 1. Calculamos la orientación de cada sensor en el espacio global
-                    Quaternion worldRot1 = Quaternion.Inverse(calibrationPose1) * rawRot1;
-                    Quaternion worldRot2 = Quaternion.Inverse(calibrationPose2) * rawRot2;
+                    Quaternion unmirroredRot1 = Quaternion.Inverse(calibrationPose1) * rawRot1;
+                    Quaternion unmirroredRot2 = Quaternion.Inverse(calibrationPose2) * rawRot2;
 
+                    // --- NUEVA LÍNEA DE CORRECCIÓN: ESPEJADO DE EJE X ---
+                    //zhu et al 2013, equation 19 relative orientation calculation
+                    // Para un brazo izquierdo, espejamos el eje X global (horizontal) 
+                    // zhu et al 2006, 3.4 relative rotation matrix computation
+                    // zhu et al 2013, table 1 standard world coordinate definition
+                    Quaternion worldRot1 = new Quaternion(-unmirroredRot1.x, unmirroredRot1.y, unmirroredRot1.z, unmirroredRot1.w);
+                    Quaternion worldRot2 = new Quaternion(-unmirroredRot2.x, unmirroredRot2.y, unmirroredRot2.z, unmirroredRot2.w);
                     // 2. El hombro (padre) rota respecto al mundo
                     if (sensor1_Model != null) {
                         sensor1_Model.rotation = worldRot1;
