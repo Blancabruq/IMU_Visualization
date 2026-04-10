@@ -11,7 +11,6 @@ void setup() {
   Serial.begin(115200);
   delay(2000); 
   
-  // Le quitamos el "Adafruit_BNO055::" y dejamos solo el nombre del modo
   if (!sensor1.begin(OPERATION_MODE_IMUPLUS)) {
     Serial.println("Error S1");
   } else {
@@ -28,13 +27,13 @@ void loop() {
   imu::Quaternion q1 = sensor1.getQuat();
   imu::Quaternion q2 = sensor2.getQuat();
   
-  // Sending Sensor 1 data 
+  // Send Sensor 1 data 
   Serial.print(q1.w(), 4); Serial.print(",");
   Serial.print(q1.x(), 4); Serial.print(",");
   Serial.print(q1.y(), 4); Serial.print(",");
   Serial.print(q1.z(), 4); Serial.print(","); 
 
-  // Sending Sensor 2 data 
+  // Send Sensor 2 data 
   Serial.print(q2.w(), 4); Serial.print(",");
   Serial.print(q2.x(), 4); Serial.print(",");
   Serial.print(q2.y(), 4); Serial.print(",");
