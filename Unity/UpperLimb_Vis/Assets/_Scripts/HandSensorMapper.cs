@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 public class HandSensorMapper : MonoBehaviour {
     [Header("Serial Connection")]
-    public string comPort = "COM9"; // Ensure this matches the Arduino COM port
+    public string comPort = "COM6"; // Ensure this matches the Arduino COM port
     private SerialPort serialPort;
 
     [Header("3D Models")]

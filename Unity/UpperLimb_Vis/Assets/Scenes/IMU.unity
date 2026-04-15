@@ -212,8 +212,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125424955}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.04930638, y: 0.9506216, z: -0.22258182, w: -0.21058226}
-  m_LocalPosition: {x: 0.80495507, y: 1.9759176, z: 2.122705}
+  m_LocalRotation: {x: -0.043035466, y: 0.9395312, z: -0.12856965, w: -0.3144821}
+  m_LocalPosition: {x: 0.8538791, y: 0.23728995, z: 1.4119672}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8947d14910e01240be95f33b5142463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comPort: COM9
+  comPort: COM6
   forearmModel: {fileID: 1480515028}
   handModel: {fileID: 1745051927}
 --- !u!4 &456089667
