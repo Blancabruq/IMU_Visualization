@@ -212,8 +212,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125424955}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.059847787, y: 0.93453866, z: -0.18944067, w: 0.29524225}
-  m_LocalPosition: {x: -1.1780957, y: 1.7806046, z: 1.7201304}
+  m_LocalRotation: {x: 0.0017300411, y: 0.9874842, z: -0.1573339, w: 0.010862827}
+  m_LocalPosition: {x: -0.113105394, y: 1.3742537, z: 1.3722693}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1745051927}
+  offsetToNPose: {x: 90, y: 0, z: 0}
+  compassCorrection: {x: 0, y: 0, z: 0}
 --- !u!1 &456089665
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +409,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1710581352}
+  offsetToNPose: {x: 90, y: 0, z: 0}
+  compassCorrection: {x: 0, y: 90, z: 0}
 --- !u!4 &760296748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1812909498023395591, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
@@ -747,6 +751,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1480515028}
+  offsetToNPose: {x: 90, y: 0, z: 0}
+  compassCorrection: {x: 0, y: 0, z: 0}
 --- !u!1 &1710581347
 GameObject:
   m_ObjectHideFlags: 0
