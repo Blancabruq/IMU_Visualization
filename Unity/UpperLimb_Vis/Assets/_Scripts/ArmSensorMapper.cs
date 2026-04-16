@@ -15,6 +15,8 @@ public class ArmSensorMapper : MonoBehaviour {
     void Start() {
         serialPort = new SerialPort(comPort, 115200);
         serialPort.ReadTimeout = 15;
+        serialPort.DtrEnable = true;
+        serialPort.RtsEnable = true;
         
         try { 
             serialPort.Open(); 
@@ -28,7 +30,9 @@ public class ArmSensorMapper : MonoBehaviour {
     void Update() {
         if (serialPort != null && serialPort.IsOpen) {
             try {
-                string[] values = serialPort.ReadLine().Split(',');
+                string rawData = serialPort.ReadLine();
+                //Debug.Log("Arm Raw Data: " + rawData);
+                string[] values = rawData.Split(',');
                 
                 // Ensure we receive the full packet (8 values)
                 if (values.Length >= 8) {
@@ -60,8 +64,10 @@ public class ArmSensorMapper : MonoBehaviour {
                     }
                 }
             } 
-            catch (System.TimeoutException) {  } 
-            catch (System.Exception) {  }
+            catch (System.TimeoutException) {
+                //Debug.LogWarning("Timeout: Arduino not sending data");  
+            } 
+            catch (System.Exception e) { Debug.LogWarning("Arm Error: " + e.Message); }
         }
 
         // Manual calibration
