@@ -122,11 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &62596571 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -3432401550182100168, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
-  m_PrefabInstance: {fileID: 904589678}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &125424955
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1745051927}
   offsetToNPose: {x: 90, y: 0, z: 0}
-  compassCorrection: {x: 0, y: 0, z: 0}
+  compassCorrection: {x: 0, y: 90, z: 0}
 --- !u!1 &456089665
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,12 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1710581352}
   offsetToNPose: {x: 90, y: 0, z: 0}
-  compassCorrection: {x: 0, y: 90, z: 0}
---- !u!4 &760296748 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -1812909498023395591, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
-  m_PrefabInstance: {fileID: 904589678}
-  m_PrefabAsset: {fileID: 0}
+  compassCorrection: {x: 0, y: 135, z: 0}
 --- !u!1001 &904589678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -752,7 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1480515028}
   offsetToNPose: {x: 90, y: 0, z: 0}
-  compassCorrection: {x: 0, y: 0, z: 0}
+  compassCorrection: {x: 0, y: 90, z: 0}
 --- !u!1 &1710581347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,10 +1195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b549382d2ffe3224fbd33dad671293a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceShoulder: {fileID: 1710581352}
-  sourceElbow: {fileID: 1480515028}
-  targetShoulder: {fileID: 62596571}
-  targetElbow: {fileID: 760296748}
 --- !u!4 &2137163412
 Transform:
   m_ObjectHideFlags: 0
