@@ -496,9 +496,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b38e35a4dd357a141b08d26ee0f96f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spine: {fileID: 0}
-  upperArm: {fileID: 0}
-  forearm: {fileID: 0}
+  spine: {fileID: 904589684}
+  upperArm: {fileID: 904589683}
+  forearm: {fileID: 904589682}
+  hand: {fileID: 904589681}
+--- !u!4 &904589681 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6502182839619065283, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
+  m_PrefabInstance: {fileID: 904589678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &904589682 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1812909498023395591, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
+  m_PrefabInstance: {fileID: 904589678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &904589683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3432401550182100168, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
+  m_PrefabInstance: {fileID: 904589678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &904589684 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 366175167995203695, guid: baafaac1d57c6944aaede9755e80a69d, type: 3}
+  m_PrefabInstance: {fileID: 904589678}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1283304325
 GameObject:
   m_ObjectHideFlags: 0
