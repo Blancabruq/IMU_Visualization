@@ -12,7 +12,7 @@ public class AngleRecorder : MonoBehaviour
 
     private bool isRecording = false;
     private bool isPromptingSave = false; // Flag to indicate if we're asking for a filename
-    private string fileNameInput = "Test_subject1"; // Default filename
+    private string fileNameInput = ""; 
     
     private float startTime;
     private StringBuilder csvContent;
@@ -118,7 +118,7 @@ public class AngleRecorder : MonoBehaviour
             if (GUI.Button(new Rect(Screen.width / 2 - 50, Screen.height / 2 + 20, 100, 30), "Save")){
                 SaveFile(fileNameInput);
                 isPromptingSave = false; // Close window
-                fileNameInput = "prueba_sujetoX"; // Reset to default for next recording
+                fileNameInput = ""; // Reset to default for next recording
             }
         }
     }
