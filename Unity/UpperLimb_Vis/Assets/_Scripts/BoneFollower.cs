@@ -36,5 +36,16 @@ public class BoneFollower : MonoBehaviour
             // Apply the rotation to the initial avatar bone rotation
             transform.rotation = deltaCorrected * virtualNPose;
         }
+        
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Recalibrate();
+        }
+    }
+    public void Recalibrate(){
+        if (sensorTarget != null){
+            initialSensorRot = sensorTarget.rotation;
+            Debug.Log($"BoneFollower for {gameObject.name} recalibrated.");
+        }
     }
 }

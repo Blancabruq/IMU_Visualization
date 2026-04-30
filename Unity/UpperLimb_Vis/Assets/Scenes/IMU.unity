@@ -405,7 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorTarget: {fileID: 1710581352}
   offsetToNPose: {x: 90, y: 0, z: 0}
-  compassCorrection: {x: 0, y: 135, z: 0}
+  compassCorrection: {x: 0, y: 90, z: 0}
 --- !u!1001 &904589678
 PrefabInstance:
   m_ObjectHideFlags: 0
