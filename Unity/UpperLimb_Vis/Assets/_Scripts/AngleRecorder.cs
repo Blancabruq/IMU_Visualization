@@ -26,13 +26,21 @@ public class AngleRecorder : MonoBehaviour
         // When pressing P, angles are calculated and displayed
         if (Input.GetKeyDown(KeyCode.P))
         {
+            /*   THIS SHOWS EULER ANGLES FOR EACH JOINT
             Vector3[] formattedAngles = CalculateAllAngles();
-            
             //Print to console
             Debug.Log($"Angle data");
             Debug.Log($"Shoulder (X: {formattedAngles[0].x:F1}º, Y: {formattedAngles[0].y:F1}º, Z: {formattedAngles[0].z:F1}º)");
             Debug.Log($"Elbow   (X: {formattedAngles[1].x:F1}º, Y: {formattedAngles[1].y:F1}º, Z: {formattedAngles[1].z:F1}º)");
             Debug.Log($"Wrist   (X: {formattedAngles[2].x:F1}º, Y: {formattedAngles[2].y:F1}º, Z: {formattedAngles[2].z:F1}º)");
+            */
+
+            float[] clinicalAngles = CalculateClinicalAngles();
+            
+            Debug.Log("<color=cyan>--- Virtual goniometer ---</color>");
+            Debug.Log($"shoulder elevation: {clinicalAngles[0]:F1}º");
+            Debug.Log($"elbow flexion: {clinicalAngles[1]:F1}º");
+
         }
         //DYNAMIC RECORDING
         // When pressing G, recording starts/stops and angles are saved to CSV
@@ -54,7 +62,7 @@ public class AngleRecorder : MonoBehaviour
         }
     }
 
-
+    /*
     private Vector3[] CalculateAllAngles()
     {
         //Calculate shoulder angle (Upper Arm relative to Trunk)
@@ -79,27 +87,41 @@ public class AngleRecorder : MonoBehaviour
             euler.z > 180 ? euler.z - 360 : euler.z
         );
     }
+    */
+
+
+    //VIRTUAL GONIOMETER
+    private float[] CalculateClinicalAngles(){
+        
+        // calculates the angle between the trunk and the upper arm (shoulder elevation) and the angle between the upper arm and forearm (elbow flexion)
+        Vector3 trunkVector = -spine.up; // assuming the spine's up vector points upwards, we take the negative to get a vector pointing downwards along the trunk
+        Vector3 armVector = forearm.position - upperArm.position; // segment from shoulder to elbow
+        Vector3 forearmVector = hand.position - forearm.position; // segment from elbow to wrist
+
+        // calculate angle between segments
+        float shoulderElevation = Vector3.Angle(trunkVector, armVector);
+        float elbowFlexion = Vector3.Angle(armVector, forearmVector);
+
+        return new float[] { shoulderElevation, elbowFlexion };
+    }
 
     private void StartRecording(){
         startTime = Time.time;
         csvContent = new StringBuilder();
         
         // Column headers for CSV
-        csvContent.AppendLine("Time(s),Shoulder_X,Shoulder_Y,Shoulder_Z,Elbow_X,Elbow_Y,Elbow_Z,Wrist_X,Wrist_Y,Wrist_Z");
+        csvContent.AppendLine("Time(s),Shoulder_Elevation_Deg,Elbow_Flexion_Deg");
         Debug.Log("Recording started... Press G again to stop.");
     }
 
     private void RecordFrame(){
         float currentTime = Time.time - startTime;
-        Vector3[] angles = CalculateAllAngles();
-
+        float[] angles = CalculateClinicalAngles();
+        // 3 deicmals for time, 2 decimals for angles
         string line = string.Format(System.Globalization.CultureInfo.InvariantCulture,
-            "{0:F3},{1:F2},{2:F2},{3:F2},{4:F2},{5:F2},{6:F2},{7:F2},{8:F2},{9:F2}",
-            currentTime,
-            angles[0].x, angles[0].y, angles[0].z,
-            angles[1].x, angles[1].y, angles[1].z,
-            angles[2].x, angles[2].y, angles[2].z);
-
+            "{0:F3},{1:F2},{2:F2}",
+            currentTime, angles[0], angles[1]);
+            
         csvContent.AppendLine(line);
     }
 
@@ -139,6 +161,6 @@ public class AngleRecorder : MonoBehaviour
 
         //Save the CSV 
         File.WriteAllText(finalPath, csvContent.ToString());
-        Debug.Log($"<color=green>ÉXITO: Archivo guardado en {finalPath}</color>");
+        Debug.Log($"<color=green>Csv saved to {finalPath}</color>");
     }
 }
