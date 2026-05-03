@@ -37,9 +37,19 @@ public class BoneFollower : MonoBehaviour
             transform.rotation = deltaCorrected * virtualNPose;
         }
         
-        if (Input.GetKeyDown(KeyCode.C))
-        {
+        if (Input.GetKeyDown(KeyCode.C)){
             Recalibrate();
+        }
+        
+        // Compass adjustment (for fine-tuning the alignment of the sensor data with the avatar's orientation)
+        // Left and Right Arrow keys to adjust the Y-axis of the compass correction
+        if (Input.GetKey(KeyCode.RightArrow)){
+            compassCorrection.y += 0.5f; 
+            Debug.Log($"[BoneFollower {gameObject.name}] Compass Y ajustado a: {compassCorrection.y:F1}º");
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow)){
+            compassCorrection.y -= 0.5f;
+            Debug.Log($"[BoneFollower {gameObject.name}] Compass Y ajustado a: {compassCorrection.y:F1}º");
         }
     }
     public void Recalibrate(){
