@@ -107,7 +107,7 @@ public class AngleRecorder : MonoBehaviour
     private void SaveFile(string customName)
     {
         //Define the path where CSV files will be saved - IMU_Results folder inside Assets
-        string folderPath = Application.dataPath + "/IMU_Results/";
+        string folderPath = Path.GetFullPath(Path.Combine(Application.dataPath, "../../../Data_Analysis/IMU_CSV_Results/"));
         
         // Create the folder
         if (!Directory.Exists(folderPath)) { 
