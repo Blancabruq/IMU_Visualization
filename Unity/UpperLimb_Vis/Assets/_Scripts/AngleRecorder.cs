@@ -17,24 +17,13 @@ public class AngleRecorder : MonoBehaviour
     private float startTime;
     private StringBuilder csvContent;
 
-    void Update()
-    {
+    void Update(){
         // Prevent recording or angle display while writing filename
         if (isPromptingSave) return;
 
         //STATIC RECORDING
         // When pressing P, angles are calculated and displayed
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            /*   THIS SHOWS EULER ANGLES FOR EACH JOINT
-            Vector3[] formattedAngles = CalculateAllAngles();
-            //Print to console
-            Debug.Log($"Angle data");
-            Debug.Log($"Shoulder (X: {formattedAngles[0].x:F1}º, Y: {formattedAngles[0].y:F1}º, Z: {formattedAngles[0].z:F1}º)");
-            Debug.Log($"Elbow   (X: {formattedAngles[1].x:F1}º, Y: {formattedAngles[1].y:F1}º, Z: {formattedAngles[1].z:F1}º)");
-            Debug.Log($"Wrist   (X: {formattedAngles[2].x:F1}º, Y: {formattedAngles[2].y:F1}º, Z: {formattedAngles[2].z:F1}º)");
-            */
-
+        if (Input.GetKeyDown(KeyCode.P)){
             float[] clinicalAngles = CalculateClinicalAngles();
             
             Debug.Log("<color=cyan>--- Virtual goniometer ---</color>");
@@ -44,8 +33,7 @@ public class AngleRecorder : MonoBehaviour
         }
         //DYNAMIC RECORDING
         // When pressing G, recording starts/stops and angles are saved to CSV
-        if (Input.GetKeyDown(KeyCode.G))
-        {
+        if (Input.GetKeyDown(KeyCode.G)){
             isRecording = !isRecording;
             
             if (isRecording) { 
@@ -56,39 +44,10 @@ public class AngleRecorder : MonoBehaviour
             }
         }
 
-        if (isRecording)
-        {
+        if (isRecording){
             RecordFrame();
         }
     }
-
-    /*
-    private Vector3[] CalculateAllAngles()
-    {
-        //Calculate shoulder angle (Upper Arm relative to Trunk)
-        Quaternion shoulderRelative = Quaternion.Inverse(spine.rotation) * upperArm.rotation;
-        //Calculate the elbow angle (Forearm relative to Upper Arm)
-        Quaternion elbowRelative = Quaternion.Inverse(upperArm.rotation) * forearm.rotation;
-        //Calculate the wrist angle (Hand relative to Forearm)
-        Quaternion wristRelative = Quaternion.Inverse(forearm.rotation) * hand.rotation; 
-
-        return new Vector3[] {
-            FormatAngles(shoulderRelative.eulerAngles),
-            FormatAngles(elbowRelative.eulerAngles),
-            FormatAngles(wristRelative.eulerAngles)
-        };
-    }
-
-    //function to convert angles from 0-360 to -180 to 180 range
-    private Vector3 FormatAngles(Vector3 euler){
-        return new Vector3(
-            euler.x > 180 ? euler.x - 360 : euler.x,
-            euler.y > 180 ? euler.y - 360 : euler.y,
-            euler.z > 180 ? euler.z - 360 : euler.z
-        );
-    }
-    */
-
 
     //VIRTUAL GONIOMETER
     private float[] CalculateClinicalAngles(){
