@@ -87,7 +87,7 @@ public class AngleRecorder : MonoBehaviour
         csvContent = new StringBuilder();
         
         // Column headers for CSV
-        csvContent.AppendLine("Time(s),Shoulder_Flexion_Deg,Shoulder_Abduction_Deg,Elbow_Flexion_Deg");
+        csvContent.AppendLine("Time(s),Shoulder_Flexion_Deg,Shoulder_Abduction_Deg,Elbow_Flexion_Deg,Elbow_Pronosupination_Deg,Wrist_Flexion_Deg");
         Debug.Log("Recording started... Press G again to stop.");
     }
 
