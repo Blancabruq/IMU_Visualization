@@ -94,7 +94,7 @@ public class AngleRecorder : MonoBehaviour
     private void RecordFrame(){
         float currentTime = Time.time - startTime;
         float[] angles = CalculateClinicalAngles();
-        // 3 deicmals for time, 2 decimals for angles
+        // 3 decimals for time, 2 decimals for angles
         string line = string.Format(System.Globalization.CultureInfo.InvariantCulture,
             "{0:F3},{1:F2},{2:F2},{3:F2},{4:F2},{5:F2}s",
             currentTime, angles[0], angles[1], angles[2], angles[3], angles[4]);
