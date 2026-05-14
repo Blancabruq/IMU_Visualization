@@ -27,8 +27,11 @@ public class AngleRecorder : MonoBehaviour
             float[] clinicalAngles = CalculateClinicalAngles();
             
             Debug.Log("<color=cyan>--- Virtual goniometer ---</color>");
-            Debug.Log($"shoulder elevation: {clinicalAngles[0]:F1}º");
-            Debug.Log($"elbow flexion: {clinicalAngles[1]:F1}º");
+            Debug.Log($"shoulder flexion: {clinicalAngles[0]:F1}º");
+            Debug.Log($"shoulder abduction: {clinicalAngles[1]:F1}º");
+            Debug.Log($"elbow flexion: {clinicalAngles[2]:F1}º");
+            Debug.Log($"elbow pronosupination: {clinicalAngles[3]:F1}º");
+            Debug.Log($"wrist flexion: {clinicalAngles[4]:F1}º");
 
         }
         //DYNAMIC RECORDING
@@ -61,16 +64,22 @@ public class AngleRecorder : MonoBehaviour
         Vector3 forearmVector = hand.position - forearm.position; // segment from elbow to wrist
 
         // calculate angle between segments
+        float elbowFlexion = Vector3.Angle(armVector, forearmVector);
+
         Vector3 armSagittal = Vector3.ProjectOnPlane(armVector, trunkRight);
         float shoulderFlexion = Vector3.Angle(trunkDown, armSagittal);
 
         Vector3 armFrontal = Vector3.ProjectOnPlane(armVector, trunkForward);
         float shoulderAbduction = Vector3.Angle(trunkDown, armFrontal);
         
+        Vector3 upperArmRef = Vector3.ProjectOnPlane(upperArm.forward, forearmVector);
+        Vector3 handRef = Vector3.ProjectOnPlane(hand.forward, forearmVector);
+        float pronosupination = Vector3.SignedAngle(upperArmRef, handRef, forearmVector);
 
-        float elbowFlexion = Vector3.Angle(armVector, forearmVector);
+        Vector3 forearmProjected = Vector3.ProjectOnPlane(forearmVector, hand.right);
+        float wristFlexion = Vector3.SignedAngle(forearmProjected, hand.forward, hand.right);
 
-        return new float[] { shoulderElevation, elbowFlexion };
+        return new float[] { shoulderFlexion, shoulderAbduction, elbowFlexion, pronosupination, wristFlexion };
     }
 
     private void StartRecording(){
@@ -78,7 +87,7 @@ public class AngleRecorder : MonoBehaviour
         csvContent = new StringBuilder();
         
         // Column headers for CSV
-        csvContent.AppendLine("Time(s),Shoulder_Elevation_Deg,Elbow_Flexion_Deg");
+        csvContent.AppendLine("Time(s),Shoulder_Flexion_Deg,Shoulder_Abduction_Deg,Elbow_Flexion_Deg");
         Debug.Log("Recording started... Press G again to stop.");
     }
 
@@ -87,8 +96,8 @@ public class AngleRecorder : MonoBehaviour
         float[] angles = CalculateClinicalAngles();
         // 3 deicmals for time, 2 decimals for angles
         string line = string.Format(System.Globalization.CultureInfo.InvariantCulture,
-            "{0:F3},{1:F2},{2:F2}",
-            currentTime, angles[0], angles[1]);
+            "{0:F3},{1:F2},{2:F2},{3:F2},{4:F2},{5:F2}s",
+            currentTime, angles[0], angles[1], angles[2], angles[3], angles[4]);
             
         csvContent.AppendLine(line);
     }
