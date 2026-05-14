@@ -53,12 +53,21 @@ public class AngleRecorder : MonoBehaviour
     private float[] CalculateClinicalAngles(){
         
         // calculates the angle between the trunk and the upper arm (shoulder elevation) and the angle between the upper arm and forearm (elbow flexion)
-        Vector3 trunkVector = -spine.up; // assuming the spine's up vector points upwards, we take the negative to get a vector pointing downwards along the trunk
+        Vector3 trunkDown = -spine.up; // assuming the spine's up vector points upwards, we take the negative to get a vector pointing downwards along the trunk
+        Vector3 trunkForward = spine.forward; // frontal plane
+        Vector3 trunkRight = spine.right;     // sagital plane
+        
         Vector3 armVector = forearm.position - upperArm.position; // segment from shoulder to elbow
         Vector3 forearmVector = hand.position - forearm.position; // segment from elbow to wrist
 
         // calculate angle between segments
-        float shoulderElevation = Vector3.Angle(trunkVector, armVector);
+        Vector3 armSagittal = Vector3.ProjectOnPlane(armVector, trunkRight);
+        float shoulderFlexion = Vector3.Angle(trunkDown, armSagittal);
+
+        Vector3 armFrontal = Vector3.ProjectOnPlane(armVector, trunkForward);
+        float shoulderAbduction = Vector3.Angle(trunkDown, armFrontal);
+        
+
         float elbowFlexion = Vector3.Angle(armVector, forearmVector);
 
         return new float[] { shoulderElevation, elbowFlexion };
