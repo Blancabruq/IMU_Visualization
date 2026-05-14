@@ -77,7 +77,7 @@ public class AngleRecorder : MonoBehaviour
         float pronosupination = Vector3.SignedAngle(upperArmRef, handRef, forearmVector);
 
         Vector3 forearmProjected = Vector3.ProjectOnPlane(forearmVector, hand.right);
-        float wristFlexion = Vector3.SignedAngle(forearmProjected, hand.forward, hand.right);
+        float wristFlexion = Vector3.SignedAngle(forearmProjected, hand.up, hand.right);
 
         return new float[] { shoulderFlexion, shoulderAbduction, elbowFlexion, pronosupination, wristFlexion };
     }
