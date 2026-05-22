@@ -26,13 +26,15 @@ public class AngleRecorder : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P)){
             float[] clinicalAngles = CalculateClinicalAngles();
             
-            Debug.Log("<color=cyan>--- Virtual goniometer ---</color>");
-            Debug.Log($"shoulder flexion: {clinicalAngles[0]:F1}º");
-            Debug.Log($"shoulder abduction: {clinicalAngles[1]:F1}º");
-            Debug.Log($"elbow flexion: {clinicalAngles[2]:F1}º");
-            Debug.Log($"elbow pronosupination: {clinicalAngles[3]:F1}º");
-            Debug.Log($"wrist flexion: {clinicalAngles[4]:F1}º");
-
+            
+            string logMessage = "<color=yellow><b>--- VIRTUAL GONIOMETER ---</b></color>\n" +
+                                $"Shoulder Flexion: {clinicalAngles[0]:F1}º\n" +
+                                $"Shoulder Abduction: {clinicalAngles[1]:F1}º\n" +
+                                $"Elbow Flexion: {clinicalAngles[2]:F1}º\n" +
+                                $"Elbow Pronosupination: {clinicalAngles[3]:F1}º\n" +
+                                $"Wrist Flexion: {clinicalAngles[4]:F1}º";
+            
+            Debug.Log(logMessage);
         }
         //DYNAMIC RECORDING
         // When pressing G, recording starts/stops and angles are saved to CSV
