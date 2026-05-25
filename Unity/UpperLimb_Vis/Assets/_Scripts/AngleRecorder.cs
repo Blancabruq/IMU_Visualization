@@ -57,7 +57,6 @@ public class AngleRecorder : MonoBehaviour
     //VIRTUAL GONIOMETER
     private float[] CalculateClinicalAngles(){
         
-        // calculates the angle between the trunk and the upper arm (shoulder elevation) and the angle between the upper arm and forearm (elbow flexion)
         Vector3 trunkDown = -spine.up; // assuming the spine's up vector points upwards, we take the negative to get a vector pointing downwards along the trunk
         Vector3 trunkForward = spine.forward; // frontal plane
         Vector3 trunkRight = spine.right;     // sagital plane
@@ -98,7 +97,7 @@ public class AngleRecorder : MonoBehaviour
         float[] angles = CalculateClinicalAngles();
         // 3 decimals for time, 2 decimals for angles
         string line = string.Format(System.Globalization.CultureInfo.InvariantCulture,
-            "{0:F3},{1:F2},{2:F2},{3:F2},{4:F2},{5:F2}s",
+            "{0:F3},{1:F2},{2:F2},{3:F2},{4:F2},{5:F2}",
             currentTime, angles[0], angles[1], angles[2], angles[3], angles[4]);
             
         csvContent.AppendLine(line);
